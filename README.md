@@ -1,112 +1,201 @@
 # Amazon Market Insights
 
-A reproducible Python analytics project exploring Amazon product listings through pricing, discount, rating and review-volume analysis. It includes a data-cleaning pipeline, derived product metrics, an interactive Streamlit dashboard, and automated tests.
+An interactive e-commerce analytics platform built with **Python, Pandas, Plotly, and Streamlit** to explore Amazon product listings through pricing, discounts, ratings, and review-volume analysis.
 
-> **Data scope:** The supplied dataset contains 1,465 product records and 16 fields (product, pricing, rating, reviewer and review metadata). It is a product/review snapshot, not order-level sales data. It does **not** provide transaction dates, units sold, revenue, or customer purchase histories. Therefore, this project analyzes product-market signals; it does not claim to calculate sales, revenue, sales growth, or customer lifetime value.
+The project includes a reproducible data-cleaning pipeline, product-level feature engineering, category-level analysis, an interactive dashboard, and automated tests.
 
-## Features
+## Project Overview
 
-- Robust numeric parsing for prices stored as numbers or currency-formatted text.
-- Duplicate removal and validation of required product/pricing/rating fields.
-- Consistent discount percentage recalculated from actual and discounted prices.
-- Derived savings amount, price ratio, rating band and text-length features.
-- Category-level summary metrics.
-- Interactive dashboard with category/rating/discount filters, KPI cards, charts, product explorer and CSV export.
-- Unit tests for cleaning, numeric parsing and aggregation.
+Amazon Market Insights transforms raw product listing data into structured analytical insights. It helps explore product-market patterns, compare categories, investigate pricing and discount behavior, and examine customer rating and review-volume metadata.
 
-## Repository structure
+**Data scope:** The source dataset contains 1,465 product records and 16 fields covering product information, pricing, ratings, reviewers, and review metadata.
+
+This is a product/review snapshot, not order-level sales data. It does not contain transaction dates, units sold, revenue, or customer purchase histories. Accordingly, this project focuses on product-market signals rather than actual sales performance or revenue forecasting.
+
+## Key Features
+
+- **Data Cleaning:** Numeric parsing, duplicate removal, and validation of required fields.
+- **Feature Engineering:** Discount percentages, savings amounts, price ratios, rating bands, and text-length metrics.
+- **Category Analysis:** Category-level product counts and summary metrics.
+- **Interactive Dashboard:** KPI cards, category filters, pricing and rating visualizations, and product exploration.
+- **Product Explorer:** Browse and compare products using available listing attributes.
+- **Data Export:** Download filtered product data as CSV.
+- **Automated Testing:** Unit tests for numeric parsing, data cleaning, and category aggregation.
+
+## Technology Stack
+
+| Area | Technologies |
+|---|---|
+| Programming | Python |
+| Data Processing | Pandas, NumPy |
+| Visualization | Plotly, Matplotlib, Seaborn |
+| Dashboard | Streamlit |
+| Data Storage | CSV, Excel |
+| Testing | Pytest |
+| Development | Jupyter Notebook, Git, GitHub |
+
+## Repository Structure
 
 ```text
 amazon-market-insights/
+│
 ├── app.py
-├── src/
-│   └── data_pipeline.py
-├── tests/
-│   └── test_data_pipeline.py
-├── data/
-│   ├── raw/              # local input; ignored by Git
-│   └── processed/        # generated outputs; ignored by Git
-├── reports/figures/      # generated charts; ignored by Git
 ├── requirements.txt
-└── README.md
+├── README.md
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── LICENSE
+│
+├── data/
+│   ├── raw/                  # Local source dataset (not committed)
+│   └── processed/            # Generated datasets (not committed)
+│
+├── notebooks/
+│   └── amazon_market_insights.ipynb
+│
+├── reports/
+│   └── figures/              # Generated visualizations
+│
+├── src/
+│   ├── __init__.py
+│   └── data_pipeline.py
+│
+└── tests/
+    └── test_data_pipeline.py
 ```
 
 ## Dataset
 
-Original source: [Amazon Sales Dataset on Kaggle](https://www.kaggle.com/datasets/karkavelrajaj/amazon-sales-dataset).
+**Source:** [Amazon Sales Dataset – Kaggle](https://www.kaggle.com/datasets/karkavelrajaj/amazon-sales-dataset)
 
-Download the dataset from Kaggle and place the Excel file at `data/raw/amazondataset.xlsx`. The project ZIP prepared for local use includes the provided source workbook, but `.gitignore` prevents the raw workbook and generated data from being committed. Check the dataset's Kaggle license/terms before redistributing it.
+Download the dataset and place the Excel workbook at:
 
-Expected core columns: `product_id`, `product_name`, `category`, `discounted_price`, `actual_price`, `rating`, and `rating_count`.
+```text
+data/raw/amazondataset.xlsx
+```
 
-## Setup
+Expected core columns include:
 
-Python 3.10+ is recommended.
+- `product_id`
+- `product_name`
+- `category`
+- `discounted_price`
+- `actual_price`
+- `rating`
+- `rating_count`
+
+The raw workbook and generated data files are excluded from Git through `.gitignore`. Check the original dataset's license and terms before redistributing it.
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.10 or later
+- pip
+
+### 1. Clone the repository
 
 ```bash
-# 1. Create and activate a virtual environment
+git clone https://github.com/siridasari001/amazon-market-insights.git
+cd amazon-market-insights
+```
+
+### 2. Create a virtual environment
+
+**Windows PowerShell:**
+
+```powershell
 python -m venv .venv
-
-# Windows PowerShell
 .venv\Scripts\Activate.ps1
-
-# macOS/Linux
-source .venv/bin/activate
-
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Put the Kaggle file at data/raw/amazondataset.xlsx
-
-# 4. Run the cleaning pipeline
-python -m src.data_pipeline
-
-# 5. Launch the dashboard
-streamlit run app.py
-
-# 6. Run tests
-pytest -q
 ```
 
-You can also upload an `.xlsx`, `.xls`, or `.csv` file directly in the dashboard.
-
-## Data outputs
-
-The pipeline writes:
-- `data/processed/amazon_products_cleaned.csv`
-- `data/processed/category_summary.csv`
-- `data/processed/data_quality_summary.csv`
-
-## Analysis questions
-
-- Which categories have the largest number of distinct products?
-- How do listed discounts vary across categories?
-- Do higher discounts correspond to higher product ratings in this snapshot?
-- Which products have the largest review counts?
-- How do listed prices and ratings vary across the catalog?
-
-These are descriptive associations, not causal conclusions. Rating count is used as review-volume/engagement metadata, not as verified units sold.
-
-## GitHub publishing
-
-Create a new public repository named `amazon-market-insights`, then from this project directory:
+**macOS / Linux:**
 
 ```bash
-git init
-git add .
-git status
-git commit -m "Build Amazon market insights analytics project"
-git branch -M main
-git remote add origin https://github.com/<YOUR-USERNAME>/amazon-market-insights.git
-git push -u origin main
+python -m venv .venv
+source .venv/bin/activate
 ```
 
-Before pushing, verify `git status` does not list the raw workbook or any personal/private data. Keep the source dataset local unless its license explicitly permits redistribution.
+### 3. Install dependencies
 
-## Resume bullet (accurate version)
+```bash
+pip install -r requirements.txt
+```
 
-**Amazon Market Insights | Python, Pandas, Streamlit, Plotly, SQL-ready CSV outputs**
-- Built a reproducible Python data pipeline to clean and validate 1,465 Amazon product records, normalize pricing fields, engineer discount/savings metrics, and aggregate category-level product insights.
-- Developed an interactive Streamlit dashboard with category filters, rating and discount analysis, product comparisons, and downloadable filtered data.
+### 4. Add the dataset
 
-Adjust the row count if the cleaned output differs after running the pipeline. Do not describe this dataset as actual sales transactions.
+Place `amazondataset.xlsx` inside:
+
+```text
+data/raw/
+```
+
+Alternatively, upload a supported `.xlsx`, `.xls`, or `.csv` file directly through the dashboard.
+
+### 5. Run the data pipeline
+
+```bash
+python -m src.data_pipeline
+```
+
+The pipeline cleans the source data and generates processed datasets.
+
+### 6. Launch the dashboard
+
+```bash
+streamlit run app.py
+```
+
+### 7. Run automated tests
+
+```bash
+python -m pytest -q
+```
+
+## Generated Outputs
+
+The data pipeline generates:
+
+| Output | Description |
+|---|---|
+| `amazon_products_cleaned.csv` | Cleaned product-level dataset with derived features |
+| `category_summary.csv` | Aggregated category-level metrics |
+| `data_quality_summary.csv` | Data quality and validation summary |
+
+All generated files are saved under `data/processed/`.
+
+## Analytical Questions
+
+The project explores questions such as:
+
+1. Which product categories contain the largest number of distinct listings?
+2. How do listed discounts vary across categories?
+3. Is there an observable relationship between listed discounts and product ratings?
+4. Which products have the highest review counts?
+5. How do listed prices and ratings vary across the catalog?
+
+These analyses are descriptive. Observed relationships do not establish causation, and review counts are engagement metadata rather than verified units sold.
+
+## Data Limitations
+
+- The dataset represents product listings and review-related information.
+- No transaction-level sales or order history is available.
+- Revenue, sales growth, units sold, and customer lifetime value cannot be calculated from these fields.
+- Ratings and review counts should be interpreted as customer feedback metadata, not direct measures of purchase volume.
+
+## Future Improvements
+
+- Add time-series analysis when dated product snapshots become available.
+- Expand product-level segmentation and comparative analytics.
+- Introduce additional data-quality checks and validation reports.
+- Deploy the Streamlit dashboard for public interactive access.
+
+## Author
+
+**Siri Chandana Dasari**
+
+[GitHub](https://github.com/siridasari001)
+
+---
+
+*Built as a reproducible product analytics project using Python and interactive data visualization.*
